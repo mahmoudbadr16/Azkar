@@ -1,3 +1,4 @@
+<!-- <Mahmoud Badr> -->
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
@@ -13,7 +14,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <style>
-        /* المتغيرات العامة (الألوان والخطوط) */
+        /* --- الأساسيات --- */
         :root {
             --primary: #0f766e;
             --primary-hover: #115e59;
@@ -23,12 +24,11 @@
             --text-main: #1f2937;
             --text-light: #4b5563;
             --border: #e5e7eb;
-            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
             --font-ui: 'Tajawal', sans-serif;
             --font-quran: 'Amiri', serif;
         }
 
-        /* الوضع الليلي */
         [data-theme="dark"] {
             --primary: #2dd4bf;
             --primary-hover: #14b8a6;
@@ -42,11 +42,15 @@
         }
 
         * {
-            box-sizing: border-box;
+            box-sizing: border-box; /* أهم خاصية لمنع الإزاحة */
             margin: 0;
             padding: 0;
-            transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
             -webkit-tap-highlight-color: transparent;
+        }
+
+        html, body {
+            width: 100%;
+            overflow-x: hidden; /* منع التمرير الجانبي نهائياً */
         }
 
         body {
@@ -58,184 +62,134 @@
             flex-direction: column;
         }
 
-        /* --- تصميم الهيدر --- */
+        /* --- الهيدر (رأس الصفحة) --- */
         header {
             background: linear-gradient(135deg, #0f766e, #134e4a);
             color: white;
-            padding: 1rem 1.5rem;
+            padding: 15px;
             position: sticky;
             top: 0;
-            z-index: 100;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.15);
             display: flex;
             justify-content: space-between;
             align-items: center;
+            width: 100%;
         }
 
         .brand {
             display: flex;
             align-items: center;
-            gap: 12px;
+            gap: 10px;
         }
 
-        .brand i {
-            font-size: 1.8rem;
-            color: var(--accent);
-        }
-
-        .brand-text h1 {
-            font-size: 1.3rem;
-            font-weight: 800;
-            line-height: 1.1;
-        }
-
-        .brand-text span {
-            font-size: 0.8rem;
-            opacity: 0.9;
-            font-weight: 300;
-        }
+        .brand i { font-size: 1.5rem; color: var(--accent); }
+        .brand-text h1 { font-size: 1.2rem; font-weight: 800; margin: 0; }
+        .brand-text span { font-size: 0.75rem; opacity: 0.9; display: block; }
 
         .theme-btn {
             background: rgba(255,255,255,0.15);
             border: none;
             color: white;
-            width: 40px;
-            height: 40px;
+            width: 38px;
+            height: 38px;
             border-radius: 50%;
             cursor: pointer;
-            backdrop-filter: blur(5px);
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.2rem;
         }
 
-        .theme-btn:hover {
-            background: rgba(255,255,255,0.25);
-        }
-
-        /* --- شريط التنقل --- */
+        /* --- شريط الأقسام --- */
         .nav-wrapper {
             background: var(--bg-card);
             border-bottom: 1px solid var(--border);
             position: sticky;
-            top: 70px; /* تحت الهيدر */
-            z-index: 90;
+            top: 68px; /* ارتفاع الهيدر */
+            z-index: 900;
             padding: 10px 0;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.02);
+            width: 100%;
         }
 
         .nav-scroller {
             display: flex;
             overflow-x: auto;
-            gap: 10px;
-            padding: 0 15px;
-            scrollbar-width: none; /* إخفاء السكرول */
+            gap: 8px;
+            padding: 0 10px;
+            scrollbar-width: none;
+            -webkit-overflow-scrolling: touch; /* تمرير ناعم للموبايل */
         }
-        
-        .nav-scroller::-webkit-scrollbar {
-            display: none;
-        }
+        .nav-scroller::-webkit-scrollbar { display: none; }
 
         .nav-btn {
             background: var(--bg-body);
             border: 1px solid var(--border);
             color: var(--text-light);
-            padding: 8px 16px;
+            padding: 8px 14px;
             border-radius: 20px;
             white-space: nowrap;
             font-family: var(--font-ui);
+            font-size: 0.85rem;
             font-weight: 600;
             cursor: pointer;
             display: flex;
             align-items: center;
-            gap: 8px;
-            font-size: 0.9rem;
+            gap: 6px;
+            transition: all 0.2s;
         }
 
         .nav-btn.active {
             background: var(--primary);
             color: white;
             border-color: var(--primary);
-            box-shadow: 0 2px 8px rgba(15, 118, 110, 0.3);
         }
 
-        /* --- محتوى الصفحة (الشبكة) --- */
+        /* --- حاوية المحتوى (عمود واحد فقط) --- */
         .main-container {
             flex: 1;
-            padding: 20px 15px;
-            max-width: 1200px;
-            margin: 0 auto;
             width: 100%;
-            /* الشبكة للكمبيوتر والشاشات الكبيرة */
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); 
-            gap: 20px;
-            align-content: start;
+            /* تحديد العرض الأقصى ليشبه الموبايل حتى على الكمبيوتر */
+            max-width: 600px; 
+            margin: 0 auto; /* توسيط العمود */
+            padding: 15px 12px; /* هوامش جانبية صغيرة */
+            display: flex;
+            flex-direction: column; /* ترتيب عمودي صارم */
+            gap: 15px; /* المسافة بين البطاقات */
         }
 
-        /* --- بطاقة الذكر --- */
+        /* --- البطاقة --- */
         .card {
             background: var(--bg-card);
-            border-radius: 16px;
-            padding: 20px;
+            border-radius: 12px;
+            padding: 18px;
             border: 1px solid var(--border);
             box-shadow: var(--shadow);
+            width: 100%; /* تملأ عرض العمود */
             display: flex;
             flex-direction: column;
             position: relative;
             overflow: hidden;
-            height: fit-content; /* البطاقة تأخذ حجم المحتوى */
-        }
-
-        .card::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            height: 4px;
-            background: var(--primary);
-            transform: scaleX(0);
-            transform-origin: right;
-            transition: transform 0.3s;
-        }
-
-        .card:hover::after {
-            transform: scaleX(1);
-        }
-
-        .card.completed {
-            opacity: 0.75;
-            border-color: #10b981;
-            background-color: rgba(16, 185, 129, 0.05);
-        }
-        .card.completed::after {
-            background: #10b981;
-            transform: scaleX(1);
         }
 
         .virtue-tag {
             background: rgba(15, 118, 110, 0.1);
             color: var(--primary);
-            font-size: 0.8rem;
+            font-size: 0.75rem;
             font-weight: bold;
-            padding: 5px 10px;
-            border-radius: 6px;
+            padding: 4px 8px;
+            border-radius: 4px;
             width: fit-content;
             margin-bottom: 12px;
             display: flex;
             align-items: center;
-            gap: 5px;
+            gap: 4px;
         }
-        [data-theme="dark"] .virtue-tag {
-            background: rgba(45, 212, 191, 0.15);
-        }
+        [data-theme="dark"] .virtue-tag { background: rgba(45, 212, 191, 0.15); }
 
         .dhikr-content {
             font-family: var(--font-quran);
-            font-size: 1.4rem;
-            line-height: 1.9;
+            font-size: 1.35rem; /* حجم خط مناسب للموبايل */
+            line-height: 1.8;
             margin-bottom: 20px;
             text-align: justify;
         }
@@ -245,23 +199,24 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
-            gap: 15px;
+            gap: 12px;
             border-top: 1px solid var(--border);
-            padding-top: 15px;
+            padding-top: 12px;
         }
 
         .progress-indicator {
             font-weight: 800;
-            font-size: 1.1rem;
+            font-size: 1rem;
             color: var(--primary);
             background: var(--bg-body);
-            width: 50px;
-            height: 50px;
+            width: 45px;
+            height: 45px;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
             flex-shrink: 0;
+            border: 2px solid var(--border);
         }
 
         .action-btn {
@@ -270,7 +225,7 @@
             color: white;
             border: none;
             padding: 12px;
-            border-radius: 10px;
+            border-radius: 8px;
             font-family: var(--font-ui);
             font-size: 1rem;
             font-weight: bold;
@@ -279,49 +234,27 @@
             align-items: center;
             justify-content: center;
             gap: 8px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            touch-action: manipulation; /* تحسين استجابة اللمس */
         }
 
-        .action-btn:active {
-            transform: scale(0.97);
-        }
+        .action-btn:active { transform: scale(0.98); }
+        .action-btn.done { background: #10b981; cursor: default; }
 
-        .action-btn.done {
-            background: #10b981;
-            cursor: default;
-            box-shadow: none;
-        }
+        .card.completed { opacity: 0.7; border-color: #10b981; }
 
         /* --- الفوتر --- */
         footer {
             background: var(--bg-card);
             border-top: 1px solid var(--border);
             text-align: center;
-            padding: 20px;
-            font-size: 0.9rem;
-        }
-
-        footer strong {
-            color: var(--primary);
-        }
-
-        /* تعديلات للموبايل (عمود واحد وشكل طولي) */
-        @media (max-width: 820px) {
-            .main-container {
-                grid-template-columns: 1fr !important; /* إجبار عمود واحد لجميع الهواتف */
-                padding: 15px;
-            }
-            .brand-text h1 { font-size: 1.1rem; }
-            
-            .card {
-                margin-bottom: 10px;
-            }
+            padding: 15px;
+            font-size: 0.8rem;
+            margin-top: auto;
         }
     </style>
 </head>
 <body>
 
-    <!-- رأس الصفحة -->
     <header>
         <div class="brand">
             <i class="fa-solid fa-kaaba"></i>
@@ -330,12 +263,11 @@
                 <span>تطوير: Mahmoud Badr</span>
             </div>
         </div>
-        <button class="theme-btn" onclick="toggleTheme()" aria-label="تبديل الوضع">
+        <button class="theme-btn" onclick="toggleTheme()" aria-label="الوضع الليلي">
             <i class="fa-solid fa-moon" id="themeIcon"></i>
         </button>
     </header>
 
-    <!-- شريط التنقل -->
     <div class="nav-wrapper">
         <div class="nav-scroller">
             <button class="nav-btn active" onclick="loadCategory('morning')"><i class="fa-regular fa-sun"></i> الصباح</button>
@@ -350,19 +282,17 @@
         </div>
     </div>
 
-    <!-- المحتوى -->
     <main class="main-container" id="content">
-        <!-- سيتم توليد البطاقات هنا -->
+        <!-- البطاقات تظهر هنا كعمود واحد -->
     </main>
 
-    <!-- التذييل -->
     <footer>
         <p>جميع الحقوق محفوظة © 2025</p>
-        <p>تم تصميم وتطوير التطبيق بواسطة <strong>Mahmoud Badr</strong></p>
+        <p>تصميم وتطوير <strong>Mahmoud Badr</strong></p>
     </footer>
 
     <script>
-        // === قاعدة البيانات (الكاملة) ===
+        // === قاعدة البيانات ===
         const db = {
             morning: [
                 { text: "أَعُوذُ بِاللهِ مِنْ الشَّيْطَانِ الرَّجِيمِ<br>اللّهُ لاَ إِلَـهَ إِلاَّ هُوَ الْحَيُّ الْقَيُّومُ لاَ تَأْخُذُهُ سِنَةٌ وَلاَ نَوْمٌ ۚ لَّهُ مَا فِي السَّمَاوَاتِ وَمَا فِي الأَرْضِ ۗ مَن ذَا الَّذِي يَشْفَعُ عِنْدَهُ إِلاَّ بِإِذْنِهِ ۚ يَعْلَمُ مَا بَيْنَ أَيْدِيهِمْ وَمَا خَلْفَهُمْ ۖ وَلاَ يُحِيطُونَ بِشَيْءٍ مِّنْ عِلْمِهِ إِلاَّ بِمَا شَاء ۚ وَسِعَ كُرْسِيُّهُ السَّمَاوَاتِ وَالأَرْضَ ۖ وَلاَ يَؤُودُهُ حِفْظُهُمَا ۚ وَهُوَ الْعَلِيُّ الْعَظِيمُ.", count: 1, virtue: "آية الكرسي: أجير من الجن" },
@@ -544,7 +474,7 @@
                 { text: "أَنِّي مَسَّنِيَ الضُّرُّ وَأَنتَ أَرْحَمُ الرَّاحِمِينَ.", count: 1, virtue: "أيوب عليه السلام" },
                 { text: "رَبِّ أَوْزِعْنِي أَنْ أَشْكُرَ نِعْمَتَكَ الَّتِي أَنْعَمْتَ عَلَيَّ وَعَلَى وَالِدَيَّ وَأَنْ أَعْمَلَ صَالِحًا تَرْضَاهُ وَأَدْخِلْنِي بِرَحْمَتِكَ فِي عِبَادِكَ الصَّالِحِينَ.", count: 1, virtue: "سليمان عليه السلام" },
                 { text: "لَّا إِلَهَ إِلَّا أَنتَ سُبْحَانَكَ إِنِّي كُنتُ مِنَ الظَّالِمِينَ.", count: 1, virtue: "يونس عليه السلام" },
-                { text: "رَبِّ هَبْ لِي مِن لَّدُنْكَ ذُرِّيَّةً طَيِّبَةً إِنَّكَ سَمِيعُ الدُّعَاء.<br>رَبِّ لَا تَذَرْنِي فَرْداً وَأَنتَ خَيْرُ الْوَارِثِينَ.", count: 1, virtue: "زكريا عليه السلام" },
+                { text: "رَبِّ هَبْ لِي مِن لَّدُنْكَ ذُرِّيَّةً طَيِّبَةً إِنَّكَ سَمِيعُ الدُّعَاء.<br>رَبِّ لَا تَذَرْنِي فَرْداً وَأَنتَ خَيْرُ الْوَارِثِينَ.", count: 1, virtue: "زكريا عليه السلام" },
                 { text: "إِنَّمَا أَشْكُو بَثِّي وَحُزْنِي إِلَى اللَّهِ.", count: 1, virtue: "يعقوب عليه السلام" }
             ],
             wudu: [
@@ -604,13 +534,11 @@
 
         // تحميل الفئة
         function loadCategory(catName) {
-            // تحديث الأزرار النشطة
             navBtns.forEach(btn => btn.classList.remove('active'));
             if(event && event.currentTarget) {
                 event.currentTarget.classList.add('active');
             }
 
-            // مسح المحتوى القديم بتأثير بسيط
             container.style.opacity = '0';
             
             setTimeout(() => {
@@ -660,7 +588,6 @@
                 current++;
                 progress.innerText = `${current}/${max}`;
                 
-                // اهتزاز خفيف للموبايل
                 if(navigator.vibrate) navigator.vibrate(40);
 
                 if (current === max) {
@@ -674,18 +601,14 @@
             btn.innerHTML = '<i class="fa-solid fa-check-circle"></i> أحسنت!';
             btn.disabled = true;
             card.classList.add('completed');
-            
-            // اهتزاز أطول عند الانتهاء
             if(navigator.vibrate) navigator.vibrate([100, 50, 100]);
         }
 
-        // التشغيل التلقائي
         window.onload = () => {
             const firstBtn = document.querySelector('.nav-btn');
             if(firstBtn) firstBtn.classList.add('active');
             loadCategory('morning');
         };
-
     </script>
 </body>
 </html>
