@@ -1,225 +1,301 @@
-<Mahmoud Badr>
+<!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <!-- إعدادات العرض الخاصة بالموبايل لمنع التصغير والتكبير وضمان التناسب -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <meta name="theme-color" content="#0f766e">
-    <title>حصن المسلم</title>
+    <meta name="description" content="تطبيق حصن المسلم - أذكار الكتاب والسنة - تطوير Mahmoud Badr">
+    <title>حصن المسلم | Mahmoud Badr</title>
     
-    <!-- الخطوط -->
-    <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Tajawal:wght@400;700&display=swap" rel="stylesheet">
+    <!-- استدعاء الخطوط والأيقونات -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <style>
-        /* --- ضبط جذري للمقاسات --- */
+        /* --- تهيئة المتغيرات والألوان --- */
+        :root {
+            --primary: #0f766e;
+            --primary-bg: #e6fffa;
+            --bg-body: #f8fafc;
+            --bg-card: #ffffff;
+            --text-main: #1e293b;
+            --text-sec: #64748b;
+            --border: #e2e8f0;
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+        }
+
+        [data-theme="dark"] {
+            --primary: #14b8a6;
+            --primary-bg: #134e4a;
+            --bg-body: #0f172a;
+            --bg-card: #1e293b;
+            --text-main: #f1f5f9;
+            --text-sec: #94a3b8;
+            --border: #334155;
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.4);
+        }
+
+        /* --- القواعد الأساسية لمنع الإزاحة --- */
         * {
-            box-sizing: border-box; /* أهم سطر لمنع الإزاحة */
+            box-sizing: border-box; /* يجعل الحواف جزءاً من العرض */
             margin: 0;
             padding: 0;
             -webkit-tap-highlight-color: transparent;
+            outline: none;
         }
 
         html, body {
             width: 100%;
-            overflow-x: hidden; /* منع السكرول الجانبي إجبارياً */
-            background-color: #f3f4f6;
-            font-family: 'Tajawal', sans-serif;
+            overflow-x: hidden; /* يمنع التمرير الأفقي نهائياً */
+            overscroll-behavior-y: none; /* يمنع ارتداد الصفحة عند السحب */
         }
 
         body {
+            font-family: 'Tajawal', sans-serif;
+            background-color: var(--bg-body);
+            color: var(--text-main);
             display: flex;
             flex-direction: column;
             min-height: 100vh;
         }
 
-        /* --- الهيدر --- */
+        /* --- الهيدر العلوي --- */
         header {
-            background: #0f766e;
+            background: var(--primary);
             color: white;
-            padding: 15px;
-            width: 100%;
+            height: 60px;
             display: flex;
-            justify-content: space-between;
             align-items: center;
+            justify-content: space-between;
+            padding: 0 16px;
             position: sticky;
             top: 0;
             z-index: 1000;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.15);
+            width: 100%;
         }
 
-        .brand h1 {
-            font-size: 1.1rem;
-            margin: 0;
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .brand h1 { font-size: 1.2rem; font-weight: 800; }
+        .brand span { font-size: 0.75rem; opacity: 0.9; }
+
+        .theme-btn {
+            background: rgba(255,255,255,0.2);
+            border: none;
+            color: white;
+            width: 36px;
+            height: 36px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
         }
 
-        /* --- شريط الأقسام --- */
+        /* --- شريط التنقل الجانبي --- */
         .nav-wrapper {
-            background: white;
-            padding: 10px;
+            background: var(--bg-card);
+            border-bottom: 1px solid var(--border);
+            padding: 10px 0;
             position: sticky;
-            top: 55px; /* أسفل الهيدر مباشرة */
+            top: 60px;
             z-index: 900;
-            border-bottom: 1px solid #e5e7eb;
             width: 100%;
         }
 
         .nav-scroller {
             display: flex;
-            overflow-x: auto; /* السماح بالتمرير الأفقي للأزرار فقط */
             gap: 8px;
-            padding-bottom: 5px;
-            scrollbar-width: none; /* إخفاء شريط التمرير */
+            overflow-x: auto;
+            padding: 0 12px;
+            scrollbar-width: none;
         }
         .nav-scroller::-webkit-scrollbar { display: none; }
 
         .nav-btn {
-            background: #f3f4f6;
-            border: 1px solid #e5e7eb;
-            padding: 8px 15px;
+            background: var(--bg-body);
+            border: 1px solid var(--border);
+            color: var(--text-sec);
+            padding: 8px 16px;
             border-radius: 20px;
-            white-space: nowrap;
             font-family: 'Tajawal', sans-serif;
             font-size: 0.9rem;
-            color: #4b5563;
+            font-weight: 600;
+            white-space: nowrap;
             cursor: pointer;
+            transition: 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 6px;
         }
 
         .nav-btn.active {
-            background: #0f766e;
+            background: var(--primary);
             color: white;
-            border-color: #0f766e;
+            border-color: var(--primary);
         }
 
-        /* --- حاوية الأذكار (العمود الرئيسي) --- */
+        /* --- حاوية البطاقات (عمود واحد) --- */
         .main-container {
+            flex: 1;
             width: 100%;
-            max-width: 100%; /* ضمان عدم تجاوز عرض الشاشة */
-            padding: 15px; /* هامش داخلي بسيط */
+            max-width: 600px; /* لضمان عدم توسع النص بشكل مفرط على الشاشات الكبيرة */
+            margin: 0 auto;
+            padding: 16px;
             display: flex;
             flex-direction: column;
-            gap: 15px;
+            gap: 16px;
         }
 
-        /* --- البطاقة --- */
+        /* --- تصميم البطاقة --- */
         .card {
-            background: white;
-            border-radius: 12px;
-            padding: 15px; /* تقليل البادينج قليلاً للموبايل */
-            width: 100%; /* تأخذ عرض الحاوية بالكامل */
-            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-            border: 1px solid #e5e7eb;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 16px;
+            box-shadow: var(--shadow);
+            width: 100%;
             display: flex;
             flex-direction: column;
+            position: relative;
         }
 
-        .virtue-tag {
-            background: #e0f2f1;
-            color: #0f766e;
+        .virtue {
+            background: var(--primary-bg);
+            color: var(--primary);
             font-size: 0.8rem;
-            padding: 4px 8px;
-            border-radius: 4px;
-            width: fit-content;
-            margin-bottom: 10px;
             font-weight: bold;
+            padding: 4px 10px;
+            border-radius: 6px;
+            width: fit-content;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
         }
 
-        .dhikr-content {
+        .dhikr-text {
             font-family: 'Amiri', serif;
-            font-size: 1.4rem; /* حجم خط مناسب للقراءة */
-            line-height: 2;
-            color: #1f2937;
+            font-size: 1.4rem;
+            line-height: 1.9;
+            color: var(--text-main);
             text-align: justify;
             margin-bottom: 20px;
-            word-wrap: break-word; /* منع الكلمات الطويلة من كسر التصميم */
+            word-wrap: break-word; /* يمنع خروج الكلمات الطويلة */
         }
 
-        /* --- أزرار التحكم --- */
-        .card-footer {
+        /* --- التذييل السفلي للبطاقة --- */
+        .card-actions {
             margin-top: auto;
             display: flex;
             align-items: center;
-            gap: 10px;
-            border-top: 1px solid #f3f4f6;
-            padding-top: 15px;
+            gap: 12px;
+            border-top: 1px solid var(--border);
+            padding-top: 12px;
         }
 
-        .count-circle {
-            width: 45px;
-            height: 45px;
+        .counter-box {
+            width: 50px;
+            height: 50px;
             border-radius: 50%;
-            background: #f8fafc;
-            border: 2px solid #0f766e;
-            color: #0f766e;
+            background: var(--bg-body);
+            border: 2px solid var(--primary);
+            color: var(--primary);
             display: flex;
             align-items: center;
             justify-content: center;
-            font-weight: bold;
+            font-weight: 800;
             font-size: 1rem;
-            flex-shrink: 0; /* منع الدائرة من الانكماش */
+            flex-shrink: 0;
         }
 
-        .action-btn {
-            flex: 1; /* الزر يأخذ باقي المساحة */
-            background: #0f766e;
+        .tap-btn {
+            flex: 1;
+            background: var(--primary);
             color: white;
             border: none;
-            height: 45px;
-            border-radius: 8px;
+            height: 50px;
+            border-radius: 12px;
             font-family: 'Tajawal', sans-serif;
             font-size: 1rem;
             font-weight: bold;
             cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
         }
 
-        .action-btn:active { transform: scale(0.98); }
+        .tap-btn:active { transform: scale(0.97); }
 
-        .card.completed { opacity: 0.6; border-color: #10b981; }
-        .card.completed .action-btn { background: #10b981; pointer-events: none; }
-        .card.completed .count-circle { border-color: #10b981; color: #10b981; }
+        /* حالة الانتهاء */
+        .card.completed { opacity: 0.7; border-color: #10b981; }
+        .card.completed .tap-btn { background: #10b981; pointer-events: none; }
+        .card.completed .counter-box { border-color: #10b981; color: #10b981; background: #ecfdf5; }
+        [data-theme="dark"] .card.completed .counter-box { background: #064e3b; }
 
         footer {
             text-align: center;
             padding: 20px;
-            font-size: 0.8rem;
-            color: #6b7280;
+            font-size: 0.85rem;
+            color: var(--text-sec);
             margin-top: auto;
+            border-top: 1px solid var(--border);
+            background: var(--bg-card);
         }
     </style>
 </head>
 <body>
 
+    <!-- الهيدر -->
     <header>
         <div class="brand">
-            <h1><i class="fa-solid fa-kaaba"></i> حصن المسلم</h1>
+            <i class="fa-solid fa-kaaba"></i>
+            <div>
+                <h1>حصن المسلم</h1>
+                <span>تطوير: Mahmoud Badr</span>
+            </div>
         </div>
-        <!-- زر الوضع الليلي -->
-        <i class="fa-solid fa-moon" style="font-size: 1.2rem; cursor: pointer;" onclick="toggleTheme()"></i>
+        <button class="theme-btn" onclick="toggleTheme()">
+            <i class="fa-solid fa-moon" id="themeIcon"></i>
+        </button>
     </header>
 
+    <!-- شريط الأقسام -->
     <div class="nav-wrapper">
         <div class="nav-scroller">
-            <button class="nav-btn active" onclick="loadCategory('morning')">🌤 الصباح</button>
-            <button class="nav-btn" onclick="loadCategory('evening')">🌑 المساء</button>
-            <button class="nav-btn" onclick="loadCategory('sleep')">🛌 النوم</button>
-            <button class="nav-btn" onclick="loadCategory('prayer')">🤲 الصلاة</button>
-            <button class="nav-btn" onclick="loadCategory('wudu')">💧 الوضوء</button>
-            <button class="nav-btn" onclick="loadCategory('mosque')">🕌 المسجد</button>
-            <button class="nav-btn" onclick="loadCategory('quranic')">📖 قرآنية</button>
-            <button class="nav-btn" onclick="loadCategory('prophets')">✨ الأنبياء</button>
-            <button class="nav-btn" onclick="loadCategory('tasbih')">📿 تسابيح</button>
+            <button class="nav-btn active" onclick="loadCategory('morning')"><i class="fa-regular fa-sun"></i> الصباح</button>
+            <button class="nav-btn" onclick="loadCategory('evening')"><i class="fa-regular fa-moon"></i> المساء</button>
+            <button class="nav-btn" onclick="loadCategory('sleep')"><i class="fa-solid fa-bed"></i> النوم</button>
+            <button class="nav-btn" onclick="loadCategory('prayer')"><i class="fa-solid fa-person-praying"></i> الصلاة</button>
+            <button class="nav-btn" onclick="loadCategory('wudu')"><i class="fa-solid fa-droplet"></i> الوضوء</button>
+            <button class="nav-btn" onclick="loadCategory('mosque')"><i class="fa-solid fa-mosque"></i> المسجد</button>
+            <button class="nav-btn" onclick="loadCategory('quranic')"><i class="fa-solid fa-book-quran"></i> قرآنية</button>
+            <button class="nav-btn" onclick="loadCategory('prophets')"><i class="fa-solid fa-hands-praying"></i> الأنبياء</button>
+            <button class="nav-btn" onclick="loadCategory('tasbih')"><i class="fa-solid fa-fingerprint"></i> تسابيح</button>
         </div>
     </div>
 
+    <!-- المحتوى -->
     <main class="main-container" id="content">
-        <!-- المحتوى سيظهر هنا -->
+        <!-- سيتم توليد البطاقات هنا -->
     </main>
 
     <footer>
-        <p>تطوير Mahmoud Badr © 2025</p>
+        <p>جميع الحقوق محفوظة © 2025</p>
+        <p>تصميم وتطوير <strong>Mahmoud Badr</strong></p>
     </footer>
 
     <script>
-        // === قاعدة البيانات ===
+        // === قاعدة البيانات الكاملة (لم يتم حذف شيء) ===
         const db = {
             morning: [
                 { text: "أَعُوذُ بِاللهِ مِنْ الشَّيْطَانِ الرَّجِيمِ<br>اللّهُ لاَ إِلَـهَ إِلاَّ هُوَ الْحَيُّ الْقَيُّومُ لاَ تَأْخُذُهُ سِنَةٌ وَلاَ نَوْمٌ ۚ لَّهُ مَا فِي السَّمَاوَاتِ وَمَا فِي الأَرْضِ ۗ مَن ذَا الَّذِي يَشْفَعُ عِنْدَهُ إِلاَّ بِإِذْنِهِ ۚ يَعْلَمُ مَا بَيْنَ أَيْدِيهِمْ وَمَا خَلْفَهُمْ ۖ وَلاَ يُحِيطُونَ بِشَيْءٍ مِّنْ عِلْمِهِ إِلاَّ بِمَا شَاء ۚ وَسِعَ كُرْسِيُّهُ السَّمَاوَاتِ وَالأَرْضَ ۖ وَلاَ يَؤُودُهُ حِفْظُهُمَا ۚ وَهُوَ الْعَلِيُّ الْعَظِيمُ.", count: 1, virtue: "آية الكرسي: أجير من الجن" },
@@ -434,82 +510,108 @@
             ]
         };
 
-         const container = document.getElementById('content');
+        const container = document.getElementById('content');
         const navBtns = document.querySelectorAll('.nav-btn');
 
-        function loadCategory(cat) {
-            // تحديث الأزرار
-            navBtns.forEach(btn => btn.classList.remove('active'));
-            event.target.classList.add('active');
-
-            // تحديث المحتوى
-            container.innerHTML = '';
-            const list = db[cat] || db['morning']; // Fallback
+        // وظيفة الوضع الليلي
+        function toggleTheme() {
+            const body = document.body;
+            const icon = document.getElementById('themeIcon');
+            const isDark = body.getAttribute('data-theme') === 'dark';
             
-            list.forEach((item, index) => {
-                const card = document.createElement('div');
-                card.className = 'card';
-                card.id = `c-${index}`;
-                
-                const virtue = item.virtue ? `<div class="virtue-tag">★ ${item.virtue}</div>` : '';
-                
-                card.innerHTML = `
-                    ${virtue}
-                    <div class="dhikr-content">${item.text}</div>
-                    <div class="card-footer">
-                        <div class="count-circle" id="cnt-${index}">0/${item.count}</div>
-                        <button class="action-btn" onclick="countUp(this, ${item.count}, ${index})">
-                            <i class="fa-solid fa-fingerprint"></i> تسبيح
-                        </button>
-                    </div>
-                `;
-                container.appendChild(card);
-            });
-            window.scrollTo(0, 0);
+            if (isDark) {
+                body.removeAttribute('data-theme');
+                icon.className = 'fa-solid fa-moon';
+                localStorage.setItem('theme', 'light');
+            } else {
+                body.setAttribute('data-theme', 'dark');
+                icon.className = 'fa-solid fa-sun';
+                localStorage.setItem('theme', 'dark');
+            }
         }
 
-        function countUp(btn, max, idx) {
-            const counter = document.getElementById(`cnt-${idx}`);
-            const card = document.getElementById(`c-${idx}`);
-            let current = parseInt(counter.innerText.split('/')[0]);
+        if (localStorage.getItem('theme') === 'dark') {
+            toggleTheme();
+        }
+
+        // تحميل الفئة
+        function loadCategory(catName) {
+            navBtns.forEach(btn => btn.classList.remove('active'));
+            if(event && event.currentTarget) {
+                event.currentTarget.classList.add('active');
+            }
+
+            container.style.opacity = '0';
+            
+            setTimeout(() => {
+                container.innerHTML = '';
+                const list = db[catName];
+                
+                if(list) {
+                    list.forEach((item, index) => {
+                        createCard(item, index);
+                    });
+                }
+                
+                container.style.opacity = '1';
+                window.scrollTo({top: 0, behavior: 'smooth'});
+            }, 200);
+        }
+
+        // إنشاء بطاقة الذكر
+        function createCard(item, index) {
+            const card = document.createElement('div');
+            card.className = 'card';
+            card.id = `card-${index}`;
+
+            const virtueHTML = item.virtue ? 
+                `<div class="virtue"><i class="fa-solid fa-star"></i> ${item.virtue}</div>` : '';
+
+            card.innerHTML = `
+                ${virtueHTML}
+                <div class="dhikr-text">${item.text}</div>
+                <div class="card-actions">
+                    <div class="counter-box" id="progress-${index}">0/${item.count}</div>
+                    <button class="tap-btn" onclick="updateCount(this, ${item.count}, ${index})">
+                        <i class="fa-solid fa-fingerprint"></i> اضغط للتسبيح
+                    </button>
+                </div>
+            `;
+            container.appendChild(card);
+        }
+
+        // تحديث العداد
+        function updateCount(btn, max, index) {
+            const progress = document.getElementById(`progress-${index}`);
+            const card = document.getElementById(`card-${index}`);
+            let current = parseInt(progress.innerText.split('/')[0]);
 
             if (current < max) {
                 current++;
-                counter.innerText = `${current}/${max}`;
+                progress.innerText = `${current}/${max}`;
+                
                 if(navigator.vibrate) navigator.vibrate(30);
 
                 if (current === max) {
-                    btn.innerText = "أحسنت!";
-                    btn.style.background = "#10b981";
-                    card.classList.add('completed');
-                    if(navigator.vibrate) navigator.vibrate([50, 50, 50]);
+                    finishCard(btn, card);
                 }
             }
         }
 
-        // الوضع الليلي
-        function toggleTheme() {
-            const body = document.body;
-            if (body.style.backgroundColor === 'rgb(30, 41, 59)') {
-                // Light Mode
-                body.style.backgroundColor = '#f3f4f6';
-                document.querySelectorAll('.card').forEach(c => {
-                    c.style.backgroundColor = 'white';
-                    c.querySelector('.dhikr-content').style.color = '#1f2937';
-                });
-            } else {
-                // Dark Mode
-                body.style.backgroundColor = '#1e293b';
-                document.querySelectorAll('.card').forEach(c => {
-                    c.style.backgroundColor = '#334155';
-                    c.style.borderColor = '#475569';
-                    c.querySelector('.dhikr-content').style.color = '#f1f5f9';
-                });
-            }
+        function finishCard(btn, card) {
+            btn.classList.add('done');
+            btn.innerHTML = '<i class="fa-solid fa-check-circle"></i> أحسنت!';
+            btn.disabled = true;
+            card.classList.add('completed');
+            if(navigator.vibrate) navigator.vibrate([50, 50, 50]);
         }
 
-        // تشغيل افتراضي
-        window.onload = () => loadCategory('morning');
+        window.onload = () => {
+            const firstBtn = document.querySelector('.nav-btn');
+            if(firstBtn) firstBtn.classList.add('active');
+            loadCategory('morning');
+        };
+
     </script>
 </body>
 </html>
