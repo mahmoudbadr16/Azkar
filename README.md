@@ -2,9 +2,11 @@
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <meta name="theme-color" content="#0f766e">
     <meta name="description" content="تطبيق حصن المسلم - أذكار الكتاب والسنة - تطوير Mahmoud Badr">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <title>حصن المسلم | Mahmoud Badr</title>
     
     <!-- خطوط عربية وأيقونات -->
@@ -14,66 +16,77 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <style>
-        /* --- الأساسيات --- */
+        /* --- ضبط المقاسات العامة --- */
         :root {
             --primary: #0f766e;
             --primary-hover: #115e59;
             --accent: #f59e0b;
-            --bg-body: #f3f4f6;
+            --bg-body: #f8fafc;
             --bg-card: #ffffff;
-            --text-main: #1f2937;
-            --text-light: #4b5563;
-            --border: #e5e7eb;
-            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            --text-main: #1e293b;
+            --text-light: #64748b;
+            --border: #e2e8f0;
+            --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+            --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
             --font-ui: 'Tajawal', sans-serif;
             --font-quran: 'Amiri', serif;
+            --header-height: 60px;
+            --nav-height: 55px;
         }
 
         [data-theme="dark"] {
-            --primary: #2dd4bf;
-            --primary-hover: #14b8a6;
+            --primary: #14b8a6;
+            --primary-hover: #2dd4bf;
             --accent: #fbbf24;
             --bg-body: #0f172a;
             --bg-card: #1e293b;
-            --text-main: #f8fafc;
-            --text-light: #cbd5e1;
+            --text-main: #f1f5f9;
+            --text-light: #94a3b8;
             --border: #334155;
-            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.5);
+            --shadow-sm: none;
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.5);
         }
 
+        /* --- تصفير الهوامش ومنع الإزاحة --- */
         * {
-            box-sizing: border-box; /* أهم خاصية لمنع الإزاحة */
+            box-sizing: border-box;
             margin: 0;
             padding: 0;
             -webkit-tap-highlight-color: transparent;
+            outline: none;
         }
 
-        html, body {
+        html {
             width: 100%;
-            overflow-x: hidden; /* منع التمرير الجانبي نهائياً */
+            height: 100%;
+            overflow-x: hidden; /* خط أحمر لمنع الإزاحة */
         }
 
         body {
             font-family: var(--font-ui);
             background-color: var(--bg-body);
             color: var(--text-main);
+            width: 100%;
             min-height: 100vh;
             display: flex;
             flex-direction: column;
+            overflow-x: hidden;
+            overscroll-behavior-y: none; /* منع تأثير السحب الزائد */
         }
 
-        /* --- الهيدر (رأس الصفحة) --- */
+        /* --- الهيدر --- */
         header {
-            background: linear-gradient(135deg, #0f766e, #134e4a);
+            background: var(--primary);
             color: white;
-            padding: 15px;
+            height: var(--header-height);
+            padding: 0 16px;
             position: sticky;
             top: 0;
             z-index: 1000;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.15);
             display: flex;
             justify-content: space-between;
             align-items: center;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
             width: 100%;
         }
 
@@ -83,49 +96,56 @@
             gap: 10px;
         }
 
-        .brand i { font-size: 1.5rem; color: var(--accent); }
-        .brand-text h1 { font-size: 1.2rem; font-weight: 800; margin: 0; }
-        .brand-text span { font-size: 0.75rem; opacity: 0.9; display: block; }
+        .brand i { font-size: 1.4rem; color: var(--accent); }
+        .brand-text h1 { font-size: 1.1rem; font-weight: 800; line-height: 1.2; }
+        .brand-text span { font-size: 0.7rem; opacity: 0.85; font-weight: 400; display: block; }
 
         .theme-btn {
             background: rgba(255,255,255,0.15);
-            border: none;
+            border: 1px solid rgba(255,255,255,0.1);
             color: white;
-            width: 38px;
-            height: 38px;
-            border-radius: 50%;
+            width: 36px;
+            height: 36px;
+            border-radius: 10px;
             cursor: pointer;
             display: flex;
             align-items: center;
             justify-content: center;
+            font-size: 1rem;
         }
 
-        /* --- شريط الأقسام --- */
+        /* --- شريط الأقسام (Scrollable) --- */
         .nav-wrapper {
             background: var(--bg-card);
             border-bottom: 1px solid var(--border);
+            height: var(--nav-height);
             position: sticky;
-            top: 68px; /* ارتفاع الهيدر */
+            top: var(--header-height);
             z-index: 900;
-            padding: 10px 0;
             width: 100%;
+            display: flex;
+            align-items: center;
+            box-shadow: var(--shadow-sm);
         }
 
         .nav-scroller {
             display: flex;
             overflow-x: auto;
             gap: 8px;
-            padding: 0 10px;
+            padding: 0 12px;
+            width: 100%;
+            height: 100%;
+            align-items: center;
             scrollbar-width: none;
-            -webkit-overflow-scrolling: touch; /* تمرير ناعم للموبايل */
+            scroll-behavior: smooth;
         }
         .nav-scroller::-webkit-scrollbar { display: none; }
 
         .nav-btn {
-            background: var(--bg-body);
+            background: transparent;
             border: 1px solid var(--border);
             color: var(--text-light);
-            padding: 8px 14px;
+            padding: 6px 14px;
             border-radius: 20px;
             white-space: nowrap;
             font-family: var(--font-ui);
@@ -135,65 +155,75 @@
             display: flex;
             align-items: center;
             gap: 6px;
-            transition: all 0.2s;
+            transition: all 0.2s ease;
+            height: 34px;
         }
 
         .nav-btn.active {
             background: var(--primary);
             color: white;
             border-color: var(--primary);
+            box-shadow: 0 2px 4px rgba(15, 118, 110, 0.2);
         }
 
-        /* --- حاوية المحتوى (عمود واحد فقط) --- */
+        /* --- منطقة المحتوى (عمود واحد صارم) --- */
         .main-container {
             flex: 1;
             width: 100%;
-            /* تحديد العرض الأقصى ليشبه الموبايل حتى على الكمبيوتر */
-            max-width: 600px; 
-            margin: 0 auto; /* توسيط العمود */
-            padding: 15px 12px; /* هوامش جانبية صغيرة */
+            max-width: 500px; /* تحسين العرض على التابلت */
+            margin: 0 auto;
+            padding: 16px;
             display: flex;
-            flex-direction: column; /* ترتيب عمودي صارم */
-            gap: 15px; /* المسافة بين البطاقات */
+            flex-direction: column;
+            gap: 16px;
         }
 
-        /* --- البطاقة --- */
+        /* --- تصميم الكرت --- */
         .card {
             background: var(--bg-card);
-            border-radius: 12px;
-            padding: 18px;
+            border-radius: 16px;
+            padding: 20px;
             border: 1px solid var(--border);
-            box-shadow: var(--shadow);
-            width: 100%; /* تملأ عرض العمود */
+            box-shadow: var(--shadow-md);
+            width: 100%;
             display: flex;
             flex-direction: column;
             position: relative;
             overflow: hidden;
+            /* Animation */
+            animation: fadeIn 0.4s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         .virtue-tag {
-            background: rgba(15, 118, 110, 0.1);
+            background: rgba(15, 118, 110, 0.08);
             color: var(--primary);
             font-size: 0.75rem;
-            font-weight: bold;
-            padding: 4px 8px;
-            border-radius: 4px;
+            font-weight: 700;
+            padding: 4px 10px;
+            border-radius: 6px;
             width: fit-content;
-            margin-bottom: 12px;
+            margin-bottom: 16px;
             display: flex;
             align-items: center;
-            gap: 4px;
+            gap: 6px;
         }
-        [data-theme="dark"] .virtue-tag { background: rgba(45, 212, 191, 0.15); }
+        [data-theme="dark"] .virtue-tag { background: rgba(45, 212, 191, 0.12); }
 
         .dhikr-content {
             font-family: var(--font-quran);
-            font-size: 1.35rem; /* حجم خط مناسب للموبايل */
-            line-height: 1.8;
-            margin-bottom: 20px;
+            font-size: 1.45rem; /* خط كبير ومقروء */
+            line-height: 1.9;
+            color: var(--text-main);
+            margin-bottom: 24px;
             text-align: justify;
         }
 
+        /* --- منطقة التحكم أسفل الكرت --- */
         .card-footer {
             margin-top: auto;
             display: flex;
@@ -201,22 +231,23 @@
             justify-content: space-between;
             gap: 12px;
             border-top: 1px solid var(--border);
-            padding-top: 12px;
+            padding-top: 16px;
         }
 
-        .progress-indicator {
-            font-weight: 800;
-            font-size: 1rem;
-            color: var(--primary);
-            background: var(--bg-body);
-            width: 45px;
-            height: 45px;
+        .progress-circle {
+            width: 48px;
+            height: 48px;
             border-radius: 50%;
+            background: var(--bg-body);
+            border: 2px solid var(--primary);
+            color: var(--primary);
             display: flex;
             align-items: center;
             justify-content: center;
+            font-weight: 800;
+            font-size: 0.95rem;
             flex-shrink: 0;
-            border: 2px solid var(--border);
+            transition: all 0.2s;
         }
 
         .action-btn {
@@ -224,33 +255,49 @@
             background: var(--primary);
             color: white;
             border: none;
-            padding: 12px;
-            border-radius: 8px;
+            height: 48px; /* ارتفاع مناسب للإبهام */
+            border-radius: 12px;
             font-family: var(--font-ui);
             font-size: 1rem;
-            font-weight: bold;
+            font-weight: 700;
             cursor: pointer;
             display: flex;
             align-items: center;
             justify-content: center;
             gap: 8px;
-            touch-action: manipulation; /* تحسين استجابة اللمس */
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
         }
 
-        .action-btn:active { transform: scale(0.98); }
-        .action-btn.done { background: #10b981; cursor: default; }
-
-        .card.completed { opacity: 0.7; border-color: #10b981; }
+        .action-btn:active { transform: scale(0.97); }
+        
+        .card.completed {
+            border-color: #10b981;
+            opacity: 0.8;
+        }
+        .card.completed .action-btn {
+            background: #10b981;
+            pointer-events: none;
+        }
+        .card.completed .progress-circle {
+            border-color: #10b981;
+            color: #10b981;
+            background: #ecfdf5;
+        }
+        [data-theme="dark"] .card.completed .progress-circle { background: #064e3b; }
 
         /* --- الفوتر --- */
         footer {
             background: var(--bg-card);
             border-top: 1px solid var(--border);
             text-align: center;
-            padding: 15px;
-            font-size: 0.8rem;
+            padding: 20px;
+            font-size: 0.85rem;
             margin-top: auto;
+            width: 100%;
         }
+
+        footer strong { color: var(--primary); }
+
     </style>
 </head>
 <body>
@@ -260,10 +307,10 @@
             <i class="fa-solid fa-kaaba"></i>
             <div class="brand-text">
                 <h1>حصن المسلم</h1>
-                <span>تطوير: Mahmoud Badr</span>
+                <span>Mahmoud Badr</span>
             </div>
         </div>
-        <button class="theme-btn" onclick="toggleTheme()" aria-label="الوضع الليلي">
+        <button class="theme-btn" onclick="toggleTheme()">
             <i class="fa-solid fa-moon" id="themeIcon"></i>
         </button>
     </header>
@@ -283,12 +330,12 @@
     </div>
 
     <main class="main-container" id="content">
-        <!-- البطاقات تظهر هنا كعمود واحد -->
+        <!-- الكروت ستظهر هنا -->
     </main>
 
     <footer>
-        <p>جميع الحقوق محفوظة © 2025</p>
-        <p>تصميم وتطوير <strong>Mahmoud Badr</strong></p>
+        <p>© 2025 حصن المسلم</p>
+        <p>تطوير <strong>Mahmoud Badr</strong></p>
     </footer>
 
     <script>
@@ -434,34 +481,6 @@
                 { text: "اللَّهُمَّ أسبغ علينا نعمتك وعلى جميع المسلمين واملء اللهم قلوبنا بالإيمان والقناعة والزم جوارحنا العبادة والطاعة واغفر اللهم لنا ولوالدينا ولإخواننا وأشياخنا ولجميع من سبقنا بالإيمان واتنا من لدنك رحمة وهيئ لنا من امرنا رشدا واتنا ربنا في الدنيا حسنة وفي الآخرة حسنة وقنا عذاب النار.", count: 1, virtue: "" },
                 { text: "سُبْحَانَ رَبِّكَ رَبِّ الْعِزَّةِ عَمَّا يَصِفُونَ، وَسَلَامٌ عَلَى الْمُرْسَلِينَ، وَالْحَمْدُ لِلَّهِ رَبِّ الْعَالَمِينَ.", count: 1, virtue: "" }
             ],
-            quranic: [
-                { text: "رَبَّنَا آتِنَا فِي الدُّنْيَا حَسَنَةً وَفِي الآخِرَةِ حَسَنَةً وَقِنَا عَذَابَ النَّارِ.", count: 1, virtue: "البقرة – 201" },
-                { text: "رَبَّنَا أَفْرِغْ عَلَيْنَا صَبْرًا وَثَبِّتْ أَقْدَامَنَا وَانصُرْنَا عَلَى الْقَوْمِ الْكَافِرِينَ.", count: 1, virtue: "البقرة – 250" },
-                { text: "رَبَّنَا لاَ تُؤَاخِذْنَا إِن نَّسِينَا أَوْ أَخْطَأْنَا رَبَّنَا وَلاَ تَحْمِلْ عَلَيْنَا إِصْرًا كَمَا حَمَلْتَهُ عَلَى الَّذِينَ مِن قَبْلِنَا رَبَّنَا وَلاَ تُحَمِّلْنَا مَا لاَ طَاقَةَ لَنَا بِهِ وَاعْفُ عَنَّا وَاغْفِرْ لَنَا وَارْحَمْنَا أَنتَ مَوْلاَنَا فَانصُرْنَا عَلَى الْقَوْمِ الْكَافِرِينَ.", count: 1, virtue: "البقرة – 286" },
-                { text: "رَبَّنَا لاَ تُزِغْ قُلُوبَنَا بَعْدَ إِذْ هَدَيْتَنَا وَهَبْ لَنَا مِن لَّدُنكَ رَحْمَةً إِنَّكَ أَنتَ الْوَهَّابُ.", count: 1, virtue: "آل عمران – 8" },
-                { text: "رَبَّنَا إِنَّنَا آمَنَّا فَاغْفِرْ لَنَا ذُنُوبَنَا وَقِنَا عَذَابَ النَّارِ.", count: 1, virtue: "آل عمران – 16" },
-                { text: "رَبِّ هَبْ لِي مِن لَّدُنْكَ ذُرِّيَّةً طَيِّبَةً إِنَّكَ سَمِيعُ الدُّعَاء.", count: 1, virtue: "آل عمران – 38" },
-                { text: "رَبَّنَا آمَنَّا بِمَا أَنزَلْتَ وَاتَّبَعْنَا الرَّسُولَ فَاكْتُبْنَا مَعَ الشَّاهِدِينَ.", count: 1, virtue: "آل عمران – 53" },
-                { text: "رَبَّنَا اغْفِرْ لَنَا ذُنُوبَنَا وَإِسْرَافَنَا فِي أَمْرِنَا وَثَبِّتْ أَقْدَامَنَا وَانصُرْنَا عَلَى الْقَوْمِ الْكَافِرِينَ.", count: 1, virtue: "آل عمران – 147" },
-                { text: "رَبَّنَا مَا خَلَقْتَ هَذا بَاطِلاً سُبْحَانَكَ فَقِنَا عَذَابَ النَّارِ رَبَّنَا إِنَّكَ مَن تُدْخِلِ النَّارَ فَقَدْ أَخْزَيْتَهُ وَمَا لِلظَّالِمِينَ مِنْ أَنصَارٍ رَّبَّنَا إِنَّنَا سَمِعْنَا مُنَادِيًا يُنَادِي لِلإِيمَانِ أَنْ آمِنُواْ بِرَبِّكُمْ فَآمَنَّا رَبَّنَا فَاغْفِرْ لَنَا ذُنُوبَنَا وَكَفِّرْ عَنَّا سَيِّئَاتِنَا وَتَوَفَّنَا مَعَ الأبْرَارِ رَبَّنَا وَآتِنَا مَا وَعَدتَّنَا عَلَى رُسُلِكَ وَلاَ تُخْزِنَا يَوْمَ الْقِيَامَةِ إِنَّكَ لاَ تُخْلِفُ الْمِيعَادَ.", count: 1, virtue: "آل عمران – 191–194" },
-                { text: "رَبَّنَا ظَلَمْنَا أَنفُسَنَا وَإِن لَّمْ تَغْفِرْ لَنَا وَتَرْحَمْنَا لَنَكُونَنَّ مِنَ الْخَاسِرِينَ.", count: 1, virtue: "الأعراف – 23" },
-                { text: "رَبَّنَا لاَ تَجْعَلْنَا مَعَ الْقَوْمِ الظَّالِمِينَ.", count: 1, virtue: "الأعراف – 47" },
-                { text: "رَبَّنَا أَفْرِغْ عَلَيْنَا صَبْرًا وَتَوَفَّنَا مُسْلِمِينَ.", count: 1, virtue: "الأعراف – 126" },
-                { text: "حَسْبِيَ اللّهُ لا إِلَـهَ إِلاَّ هُوَ عَلَيْهِ تَوَكَّلْتُ وَهُوَ رَبُّ الْعَرْشِ الْعَظِيمِ.", count: 1, virtue: "التوبة – 129" },
-                { text: "رَبَّنَا لاَ تَجْعَلْنَا فِتْنَةً لِّلْقَوْمِ الظَّالِمِينَ وَنَجِّنَا بِرَحْمَتِكَ مِنَ الْقَوْمِ الْكَافِرِينَ.", count: 1, virtue: "يونس – 85–86" },
-                { text: "رَبِّ إِنِّي أَعُوذُ بِكَ أَنْ أَسْأَلَكَ مَا لَيْسَ لِي بِهِ عِلْمٌ وَإِلاَّ تَغْفِرْ لِي وَتَرْحَمْنِي أَكُن مِّنَ الْخَاسِرِينَ.", count: 1, virtue: "هود – 47" },
-                { text: "رَبِّ اجْعَلْنِي مُقِيمَ الصَّلاَةِ وَمِن ذُرِّيَّتِي رَبَّنَا وَتَقَبَّلْ دُعَاء.", count: 1, virtue: "إبراهيم – 40" },
-                { text: "رَبَّنَا اغْفِرْ لِي وَلِوَالِدَيَّ وَلِلْمُؤْمِنِينَ يَوْمَ يَقُومُ الْحِسَابُ.", count: 1, virtue: "إبراهيم – 41" },
-                { text: "رَّبِّ أَدْخِلْنِي مُدْخَلَ صِدْقٍ وَأَخْرِجْنِي مُخْرَجَ صِدْقٍ وَاجْعَل لِّي مِن لَّدُنكَ سُلْطَانًا نَّصِيرًا.", count: 1, virtue: "الإسراء – 80" },
-                { text: "رَبَّنَا آتِنَا مِن لَّدُنكَ رَحْمَةً وَهَيِّئْ لَنَا مِنْ أَمْرِنَا رَشَدًا.", count: 1, virtue: "الكهف – 10" },
-                { text: "رَبِّ اشْرَحْ لِي صَدْرِي وَيَسِّرْ لِي أَمْرِي وَاحْلُلْ عُقْدَةً مِّن لِّسَانِي يَفْقَهُوا قَوْلِي.", count: 1, virtue: "طه – 25–28" },
-                { text: "رَّبِّ زِدْنِي عِلْمًا.", count: 1, virtue: "طه – 114" },
-                { text: "لا إِلَهَ إِلا أَنتَ سُبْحَانَكَ إِنِّي كُنتُ مِنَ الظَّالِمِينَ.", count: 1, virtue: "الأنبياء – 87" },
-                { text: "رَبِّ لَا تَذَرْنِي فَرْدًا وَأَنتَ خَيْرُ الْوَارِثِينَ.", count: 1, virtue: "الأنبياء – 89" },
-                { text: "رَّبِّ أَعُوذُ بِكَ مِنْ هَمَزَاتِ الشَّيَاطِينِ وَأَعُوذُ بِكَ رَبِّ أَن يَحْضُرُونِ.", count: 1, virtue: "المؤمنون – 97–98" },
-                { text: "رَبَّنَا آمَنَّا فَاغْفِرْ لَنَا وَارْحَمْنَا وَأَنتَ خَيْرُ الرَّاحِمِينَ.", count: 1, virtue: "المؤمنون – 109" },
-                { text: "رَّبِّ اغْفِرْ وَارْحَمْ وَأَنتَ خَيْرُ الرَّاحِمِينَ.", count: 1, virtue: "المؤمنون – 118" }
-            ],
             prophets: [
                 { text: "رَبَّنَا ظَلَمْنَا أَنفُسَنَا وَإِن لَّمْ تَغْفِرْ لَنَا وَتَرْحَمْنَا لَنَكُونَنَّ مِنَ الْخَاسِرِينَ.", count: 1, virtue: "آدم عليه السلام" },
                 { text: "رَّبِّ اغْفِرْ لِي وَلِوَالِدَيَّ وَلِمَن دَخَلَ بَيْتِيَ مُؤْمِنًا وَلِلْمُؤْمِنِينَ وَالْمُؤْمِنَاتِ وَلَا تَزِدِ الظَّالِمِينَ إِلَّا تَبَارًا.<br><br>رَبِّ إِنِّي أَعُوذُ بِكَ أَنْ أَسْأَلَكَ مَا لَيْسَ لِي بِهِ عِلْمٌ وَإِلاَّ تَغْفِرْ لِي وَتَرْحَمْنِي أَكُن مِّنَ الْخَاسِرِينَ.<br><br>رَّبِّ أَنزِلْنِي مُنزَلاً مُّبَارَكاً وَأَنتَ خَيْرُ الْمُنزِلِينَ.", count: 1, virtue: "نوح عليه السلام" },
@@ -569,9 +588,9 @@
                 ${virtueHTML}
                 <div class="dhikr-content">${item.text}</div>
                 <div class="card-footer">
-                    <div class="progress-indicator" id="progress-${index}">0/${item.count}</div>
+                    <div class="progress-circle" id="progress-${index}">0/${item.count}</div>
                     <button class="action-btn" onclick="updateCount(this, ${item.count}, ${index})">
-                        <i class="fa-solid fa-fingerprint"></i> اضغط للتسبيح
+                        <i class="fa-solid fa-fingerprint"></i> تسبيح
                     </button>
                 </div>
             `;
